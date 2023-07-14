@@ -15,4 +15,4 @@ const userSchema = new mongoose.Schema({
   thoughts: [{ type: Schema.Types.ObjectId, ref: "Thought" }],
 });
 
-module.exports = User;
+module.exports = userSchema;

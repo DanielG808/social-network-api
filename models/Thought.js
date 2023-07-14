@@ -15,3 +15,5 @@ const thoughtSchema = new Schema(
     id: false,
   }
 );
+
+module.exports = thoughtSchema;
