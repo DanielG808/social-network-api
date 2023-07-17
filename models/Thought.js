@@ -25,25 +25,27 @@ const reactionSchema = new Schema(
   }
 );
 
-const thoughtSchema = new Schema({
-  thoughtText: { type: String, required: true, maxlength: 280, minlength: 1 },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-    get: (time) => moment(time).format("MMMM Do YYYY, h:mm:ss a"),
+const thoughtSchema = new Schema(
+  {
+    thoughtText: { type: String, required: true, maxlength: 280, minlength: 1 },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      get: (time) => moment(time).format("MMMM Do YYYY, h:mm:ss a"),
+    },
+    username: {
+      type: String,
+      required: true,
+    },
+    reactions: [reactionSchema],
   },
-  username: {
-    type: String,
-    required: true,
-  },
-  reactions: [reactionSchema]
-}
-{
-  toJSON: {
-    getters: true,
-  },
-  id: false
-});
+  {
+    toJSON: {
+      getters: true,
+    },
+    id: false,
+  }
+);
 
 thoughtSchema.virtual("reactionCount").get(function () {
   return this.reactions.length;
