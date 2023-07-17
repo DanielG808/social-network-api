@@ -35,8 +35,9 @@ const userController = {
         .populate({ path: "thoughts", select: "-__v" })
         .populate({ path: "friends", select: "-__v" });
 
-      res.status(200).JSON(users);
+      res.status(200).json(users);
     } catch (error) {
+      console.log(error);
       res.status(500).json(error);
     }
   },
@@ -44,17 +45,22 @@ const userController = {
   // PUT update a user by ID
   async updateUser(req, res) {
     try {
-      const user = User.findOneAndUpdate({ _id: req.params.id }, req.body, {
-        new: true,
-        runValidators: true,
-      });
+      const user = await User.findOneAndUpdate(
+        { _id: req.params.id },
+        req.body,
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
 
       if (!user) {
-        res.status(404).json({ message: "No User with this ID." });
+        return res.status(404).json({ message: "No User with this ID." });
       }
-
-      res.status(200).json(user);
+      console.log(user);
+      return res.status(200).json(user);
     } catch (error) {
+      console.log(error);
       res.status(500).json(error);
     }
   },
@@ -62,10 +68,10 @@ const userController = {
   // DELETE a user by ID
   async deleteUser(req, res) {
     try {
-      const user = User.findOneAndDelete({ _id: req.params.id });
+      const user = await User.findOneAndDelete({ _id: req.params.id });
 
       if (!user) {
-        res.status(404).json({ message: "No User with this ID." });
+        return res.status(404).json({ message: "No User with this ID." });
       }
 
       res.status(200).json(user);
