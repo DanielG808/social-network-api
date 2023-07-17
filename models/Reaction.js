@@ -1,4 +1,4 @@
-const { Schema, Types } = require("mongoose");
+const { Schema, Types, model } = require("mongoose");
 
 const reactionSchema = new Schema({
   reactionId: {
@@ -7,5 +7,7 @@ const reactionSchema = new Schema({
   },
   reactionBody: { type: String, required: true, maxlength: 280 },
 });
+
+const Reaction = model("Reaction", reactionSchema);
 
 module.exports = reactionSchema;
