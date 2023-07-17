@@ -5,12 +5,15 @@ const thoughtController = {
   async createThought(req, res) {
     try {
       const thought = await Thought.create(req.body);
-
+      console.log(thought);
       const user = await User.findOneAndUpdate(
-        { _id: req.params.userId },
-        { $push: { thoughts: _id } },
+        { userId: req.params.userId },
+        { $push: { thoughts: thought._id } },
         { new: true }
-      );
+      )
+        .populate({ path: "thoughts", select: "-__v" })
+        .populate({ path: "friends", select: "-__v" });
+
       res.status(200).json(user);
     } catch (error) {
       console.log(error);
