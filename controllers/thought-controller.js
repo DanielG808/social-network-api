@@ -22,6 +22,20 @@ const thoughtController = {
   },
 
   // GET request to get all the Thoughts
+  async getThoughts(req, res) {
+    try {
+      const thoughts = await Thought.find().populate({
+        path: "reactions",
+        select: "-__v",
+      });
+
+      res.status(200).json(thoughts);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json(error);
+    }
+  },
+
   // GET request to get one Thought by id
   // PUT request to update one Thought by id
   // DELETE request to delete one Thought by id
