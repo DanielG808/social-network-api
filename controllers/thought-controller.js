@@ -118,6 +118,24 @@ const thoughtController = {
   },
 
   // DELETE request to delete a reaction from a Thought
+  async deleteReaction(req, res) {
+    try {
+      const thought = await Thought.findOneAndUpdate(
+        { _id: req.params.thoughtId },
+        { $pull: { reactions: { _id: req.params.reactionId } } },
+        { new: true }
+      );
+
+      if (!thought) {
+        return res.status(404).json({ message: "No Thought with this ID." });
+      }
+
+      res.status(200).json(thought);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json(error);
+    }
+  },
 };
 
 module.exports = thoughtController;
