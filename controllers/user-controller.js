@@ -19,7 +19,7 @@ const userController = {
         .populate({ path: "friends", select: "-__v" });
 
       if (!user) {
-        return res.status(404).json({ message: "No post with that ID" });
+        return res.status(404).json({ message: "No User with that ID" });
       }
 
       res.status(200).json(user);
@@ -80,7 +80,7 @@ const userController = {
     }
   },
 
-  // POST request to add a friend to another user
+  // PUT request to add a friend to another user
   async addFriend(req, res) {
     try {
       const friend = await User.findOneAndUpdate(

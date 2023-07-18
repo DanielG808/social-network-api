@@ -10,10 +10,10 @@ const thoughtController = {
         { userId: req.params.userId },
         { $push: { thoughts: thought._id } },
         { new: true }
-      )
-        .populate({ path: "thoughts", select: "-__v" })
-        .populate({ path: "friends", select: "-__v" });
-
+      ).populate({
+        path: "reactions",
+        select: "-__v",
+      });
       res.status(200).json(user);
     } catch (error) {
       console.log(error);
@@ -62,7 +62,10 @@ const thoughtController = {
         { _id: req.params.id },
         req.body,
         { new: true, runValidators: true }
-      );
+      ).populate({
+        path: "reactions",
+        select: "-__v",
+      });
 
       if (!thought) {
         return res.status(404).json({ message: "No Thought with this ID." });
@@ -94,8 +97,26 @@ const thoughtController = {
   // PUT request to add a reaction to a Thought
   async createReaction(req, res) {
     try {
-    } catch (error) {}
+      const thought = await Thought.findOneAndUpdate(
+        { _id: req.params.id },
+        { $push: { reactions: req.body } },
+        { new: true, runValidators: true }
+      ).populate({
+        path: "reactions",
+        select: "-__v",
+      });
+
+      if (!thought) {
+        return res.status(404).json({ message: "No Thought with this ID." });
+      }
+
+      res.status(200).json(thought);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json(error);
+    }
   },
+
   // DELETE request to delete a reaction from a Thought
 };
 
