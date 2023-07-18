@@ -76,7 +76,26 @@ const thoughtController = {
   },
 
   // DELETE request to delete one Thought by id
+  async deleteThought(req, res) {
+    try {
+      const thought = await Thought.findOneAndDelete({ _id: req.params.id });
+
+      if (!thought) {
+        return res.status(404).json({ message: "No Thought with this ID." });
+      }
+
+      res.status(200).json({ message: "Thought deleted!" });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json(error);
+    }
+  },
+
   // PUT request to add a reaction to a Thought
+  async createReaction(req, res) {
+    try {
+    } catch (error) {}
+  },
   // DELETE request to delete a reaction from a Thought
 };
 
