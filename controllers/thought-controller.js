@@ -10,10 +10,9 @@ const thoughtController = {
         { userId: req.params.userId },
         { $push: { thoughts: thought._id } },
         { new: true }
-      ).populate({
-        path: "reactions",
-        select: "-__v",
-      });
+      )
+        .populate({ path: "thoughts", select: "-__v" })
+        .populate({ path: "friends", select: "-__v" });
       res.status(200).json(user);
     } catch (error) {
       console.log(error);
